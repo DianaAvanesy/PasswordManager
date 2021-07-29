@@ -1,0 +1,23 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+<a href="add">Add new password</a>
+
+<table>
+    <thead>
+        <td>User</td>
+        <td>Name</td>
+        <td>Password</td>
+        <td></td>
+    </thead>
+    {{#each dataset}}
+    <tr>
+        <td>{{this.userId}}</td>
+        <td>{{this.userName}}</td>
+        <td>{{this.userPassword}}</td>
+        <td>
+            <a href="/edit/{{this._id}}" > Edit </a>
+            <a href="/delete/{{this._id}}"> Delete</a> 
+        </td>
+    </tr>
+    {{/each}}
+</table>
