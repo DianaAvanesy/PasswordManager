@@ -9,6 +9,10 @@ const mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const sesssion = require('express-session');
+const passport = require('passport');
+
+
 var app = express();
 
 // view engine setup
@@ -20,6 +24,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+//passswords
+app.use(sesssion({
+  secret: 'passwordManager',
+  resave: false,
+  saveUninitialized: false
+}));
+//init passport
+app.use(passport.initialize());
+//passport uses the config session: express-session
+app.use(passport.session());
+
+//Link passport to the user model
+const User = require('./models/user');
+//use default local strategy > username/password
+passport.use(User.createStrategy())
+// set password to write/read data to/from session object
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
