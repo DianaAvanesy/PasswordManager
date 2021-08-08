@@ -1,5 +1,37 @@
-<h1>Login</h1>
+<div class="columns is-mobile">
+    <div class="column is-one-quarter is-offset-one-third">
+        <section class="hero is-fullheight">
+            <div class="login">
+                <h1 class="title is-1">Sign In</h1>
+                <form method="post">
+                    <div class="field">
+                        <label class="label">Username</label>
+                        <div class="control">
+                            <input class="input is-normal is-rounded" type="email" placeholder="hello@example.com"
+                                name="username" id="username"  required />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input class="input is-normal is-rounded" placeholder="**********"
+                                name="password" id="password" type="password" required/>
+                        </div>
+                    </div>
+                    <br />
+                    <button class="button is-block is-primary is-medium is-rounded" type="submit">
+                        Login
+                    </button>
+                    Need an account? <a href="/register" title="Register">Register</a>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
 
+
+
+<!--
 <form method="post">
     <fieldset class="form-group">
         <label for="username" class="col-2 control-label">Username: *</label>
@@ -15,3 +47,4 @@
         Need an account? <a href="/register" title="Register">Register</a>
     </fieldset>
 </form>
+-->

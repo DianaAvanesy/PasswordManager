@@ -3,8 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var hbs = require('hbs');
+const favicon = require('express-favicon');
+hbs.registerPartials(__dirname + '/views/partials');
 
 const mongoose = require('mongoose');
+
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,6 +29,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(__dirname + '/public/images/favicon.png'));
+
+
+app.use(express.static(path.join(__dirname, '/public/images')));
 
 
 //passswords

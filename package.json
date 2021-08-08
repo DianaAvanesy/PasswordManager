@@ -6,9 +6,12 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "bulma": "^0.9.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-favicon": "^2.0.1",
     "express-session": "^1.17.2",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",

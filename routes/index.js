@@ -2,6 +2,9 @@ const { Router } = require('express');
 var express = require('express');
 var router = express.Router();
 
+const {encrypt, decrypt} = require("../encriptionHandeler")
+
+
 function IsLoggedIn(req,res,next) {
   if (req.isAuthenticated()) {
       return next();
@@ -12,19 +15,53 @@ function IsLoggedIn(req,res,next) {
 
 
 /* GET home page. */
-router.get('/', IsLoggedIn, (req, res, next) => {
+router.get('/', (req, res, next) => {
  // res.render('index', { title: 'Express' });
   Password.find((err, passwords) => {
     if(err){
 
     }
     else{
-      res.render('index', {title: 'List of passwords',
+      res.render('index', {title: 'Forget it',
        dataset: passwords, user:req.user });
     }
   });
 
 });
+
+
+/* GET home page. */
+router.get('/list',IsLoggedIn, (req, res, next) => {
+  
+  // res.render('index', { title: 'Express' });
+   Password.find((err, passwords) => {
+     if(err){
+ 
+     }
+     else{
+
+        var count = Password.countDocuments().then((mycount) => {
+          res.render('list', {title: 'List of passwords',
+          dataset: passwords, count: mycount, user:req.user });
+
+        });
+
+
+     }
+   } 
+   );
+ 
+ });
+
+
+
+
+
+router.get('/news', function(req, res, next) {
+  res.render('news', { title: 'Add new password here' });
+});
+
+
 
 
 router.get('/add', IsLoggedIn, function(req, res, next) {
@@ -110,7 +147,7 @@ router.get('/login', function(req, res, next) {
   res.render('AuthN/login', { title: 'Login' });
 });
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/list',
   failureRedirect: '/login',
   failueMessage: 'Invalid Credentials'
 }));

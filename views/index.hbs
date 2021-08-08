@@ -1,23 +1,63 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<a href="add">Add new password</a>
+<section class="section is-medium">
 
-<table>
-    <thead>
-        <td>User</td>
-        <td>Name</td>
-        <td>Password</td>
-        <td></td>
-    </thead>
-    {{#each dataset}}
-    <tr>
-        <td>{{this.userId}}</td>
-        <td>{{this.userName}}</td>
-        <td>{{this.userPassword}}</td>
-        <td>
-            <a href="/edit/{{this._id}}" > Edit </a>
-            <a href="/delete/{{this._id}}"> Delete</a> 
-        </td>
-    </tr>
-    {{/each}}
-</table>
+    <div class="columns">
+        <div class="column">
+            <section class="hero is-small is-primary">
+                <div class="hero-body">
+                    <p class="subtitle">
+                        <h1 class="title is-1">Wellcome to the FORGET IT!</h1>
+                        <p class="subtitle">
+                            Go ahead and forget your passwords
+                        </p>
+                    </p>
+                </div>
+            </section>
+        </div>
+        <div class="column">
+            <img src="images/passwordsTitle.PNG" alt="Takken from: https://1password.com/img/redesign/homepage/family-illustration.f70d5d9ecd3c8cc5371e5d8b841afa36.svg" />
+        </div>
+    </div>
+
+</section>
+
+<div class="columns">
+    <div class="column">
+
+        <div class="card">
+            <div class="card-content">
+                <p class="subtitle">
+                    "This is the best password manager I have ever used!"
+                </p>
+                <p class="subtitle">
+                    From fakerewiews.com
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="column">
+        <div class="card">
+            <div class="card-content">
+                <p class="subtitle">
+                    “I am so glad I found this app! This is the coolest thing!”
+                </p>
+                <p class="subtitle">
+                    Josh Shmosh
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="card">
+            <div class="card-content">
+                <p class="subtitle">
+                    “Wow! This app changed my life!”
+                </p>
+                <p class="subtitle">
+                    Fake Name
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
