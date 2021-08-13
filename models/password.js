@@ -25,11 +25,11 @@ const schemaDefinition = {
 var passwordSchema = new mongoose.Schema(schemaDefinition);
 
 passwordSchema.pre('findOneAndUpdate', function (next) {
-    console.log("dfcs");
-    var userAccountPassword = encryptionHelper.getEncKey();
 
+    var userAccountPassword = encryptionHelper.getEncKey();
+    //If user is using github and doesnt have a password app will use userId to encrypt password entities
     if(userAccountPassword == null || userAccountPassword == ''){
-        userAccountPassword = this.userId;
+        userAccountPassword = this._update.userId;
     }
     const initVector = userAccountPassword.toString().repeat(16).substr(0, 16);
     const Securitykey = userAccountPassword.toString().repeat(32).substr(0, 32);
@@ -69,12 +69,15 @@ passwordSchema.pre('save', async function(next) {
 
 passwordSchema.post('init', async function() {
     var userAccountPassword = encryptionHelper.getEncKey();
-   // if(userAccountPassword == null || userAccountPassword == ''){
-    //    userAccountPassword = this.userId;
-   // }
-
+    console.log("======>userPassword",userAccountPassword);
+   if(userAccountPassword == null || userAccountPassword == ''){
+           
+    userAccountPassword = this.userId;
+    }
+   
     const Securitykey = userAccountPassword.toString().repeat(32).substr(0, 32);
     const initVector = userAccountPassword.toString().repeat(16).substr(0, 16);
+    console.log("======>init",initVector, Securitykey, userAccountPassword);
     const decipher = crypto.createDecipheriv(algorithm, Securitykey, initVector);
     
     let decryptedData = decipher.update(this.userPassword, "hex", "utf-8");
