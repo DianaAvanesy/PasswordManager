@@ -1,17 +1,61 @@
+<div class="columns is-mobile is-centered">
+    <div class="column is-half ">
 
-<form method='POST'>
-    <fieldset>
-        <label for="user">UserID</label>
-        <input name="user" id="user" required value="{{project.userId}}" />
-    </fieldset>
-        <fieldset>
-        <label for="username">User Name</label>
-        <input name="username" id="username" required value="{{project.userName}}"/>
-    </fieldset>
-        <fieldset>
-        <label for="password">Password</label>
-        <input name="password" id="password" required value="{{project.userPassword}}"/>
-    </fieldset>
 
-    <button>Save</button>
-</form>
+
+        <form class="form-horizontal" method='POST'>
+            <fieldset>
+
+                <!-- DO NOT FORGET USERID       
+
+                 <label for="user">UserID</label>
+                <input name="user" id="user" required value="{{project.userId}}" />
+                -->
+                <!-- Form Name -->
+                <h2 class="title is-2  has-text-centered">Edit the password </h2>    
+
+                <!-- Text input-->
+                <div class="field">
+                    <label class="label" for="website">Name:</label>
+                    <div class="control">
+                        <input id="website" name="website" type="text"
+                            placeholder="Place here URL or name of the website you creating password for" class="input "
+                            required value="{{project.website}}">
+
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="field">
+                    <label class="label" for="username">User name:</label>
+                    <div class="control">
+                        <input id="username" name="username" type="text" placeholder="Place your username here"
+                            class="input " required value="{{project.userName}}">
+
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="field">
+                    <label class="label" for="password">Password:</label>
+                    <div class="control">
+                        <input id="password" name="password" type="text" placeholder="Place your password here"
+                            class="input " required value="{{project.userPassword}}">
+                            
+                        <p class="help">Click here to generate secure password with the help of FORGET IT</p>
+                    </div>
+                </div>
+
+
+                <!-- Button -->
+                <div class="field">
+                    <label class="label" for="submitButton"></label>
+                    <div class="control">
+                        <button id="submitButton" name="submitButton" class="button is-primary">Save</button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</div>

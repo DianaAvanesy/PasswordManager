@@ -5,3 +5,18 @@
     </p>
   </div>
 </section>
+<br>
+<div class="container" >
+  {{#each dataset}}
+  
+  
+  <div class="block">
+    <div class="box">
+     <p class="title">{{this.title}}</p>
+      {{this.information}}
+    </div>
+  </div>
+
+{{/each}}
+
+</div>

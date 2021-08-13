@@ -1,9 +1,12 @@
 const { Router } = require('express');
 var express = require('express');
 var router = express.Router();
+var encryptionHelper = require('../helpers/encryption.js');
+const Password=require('../models/password');
 
-const {encrypt, decrypt} = require("../encriptionHandeler")
 
+const contextService = require('request-context');
+router.use(contextService.middleware('request'));
 
 function IsLoggedIn(req,res,next) {
   if (req.isAuthenticated()) {
@@ -11,13 +14,19 @@ function IsLoggedIn(req,res,next) {
   }
   res.redirect('/login');
 }
+// save a model in put requests
+router.put(function (req, res, next) {
+  new Password(req.body).save((err, doc) => res.json(doc));
+});
+
 
 
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
  // res.render('index', { title: 'Express' });
-  Password.find((err, passwords) => {
+ /* 
+ Password.find((err, passwords) => {
     if(err){
 
     }
@@ -25,7 +34,8 @@ router.get('/', (req, res, next) => {
       res.render('index', {title: 'Forget it',
        dataset: passwords, user:req.user });
     }
-  });
+  });*/
+  res.render('index', {title: 'Forget it'});
 
 });
 
@@ -33,14 +43,23 @@ router.get('/', (req, res, next) => {
 /* GET home page. */
 router.get('/list',IsLoggedIn, (req, res, next) => {
   
-  // res.render('index', { title: 'Express' });
-   Password.find((err, passwords) => {
+  //console.log(req);
+  //console.log(req.user);
+  //console.log(contextService.get('password'));
+  //console.log(contextService.get('request:password'))
+
+
+   Password.find({userId: req.user._id },function(err, passwords) {
      if(err){
- 
+      console.log(err);
      }
      else{
+      //const pasword = contextService.get('request:password');
 
-        var count = Password.countDocuments().then((mycount) => {
+      //console.log(pasword);
+      //contextService.set('request:password', req.body.password);
+
+        var count = Password.countDocuments({userId: req.user._id}).then((mycount) => {
           res.render('list', {title: 'List of passwords',
           dataset: passwords, count: mycount, user:req.user });
 
@@ -56,10 +75,17 @@ router.get('/list',IsLoggedIn, (req, res, next) => {
 
 
 
-
+/** 
 router.get('/news', function(req, res, next) {
   res.render('news', { title: 'Add new password here' });
 });
+
+*/
+
+
+
+
+
 
 
 
@@ -69,19 +95,22 @@ router.get('/add', IsLoggedIn, function(req, res, next) {
 });
 
 //POST:
-const Password=require('../models/password');
 router.post('/add', IsLoggedIn, function(req, res, next) {
+
+  console.log("userId: ", req.user._id);
   Password.create({
     //data
-    userId:req.body.user,
+    userId:req.user._id,
     userName:req.body.username,
-    userPassword: req.body.password
+    userPassword: req.body.password,
+    website: req.body.website
+
   }, (err, newDoc) => {
       if(err){
         console.log(err);
       }
       else{
-        res.redirect('/add')
+        res.redirect('/list');
       }
   });
 });
@@ -94,7 +123,7 @@ router.get('/delete/:_id',IsLoggedIn, function(req, res, next){
 
       }
       else {
-        res.redirect('/');
+        res.redirect('/list');
       }
     });
 
@@ -104,6 +133,9 @@ router.get('/delete/:_id',IsLoggedIn, function(req, res, next){
 //EDIT
 
 router.get('/edit/:_id',IsLoggedIn, (req, res, next) => {
+
+  //console.log("EK in Edit (GET)", encryptionKey);
+
   Password.findById(req.params._id, (err, password) =>{    
     if(err){
 
@@ -119,39 +151,68 @@ router.get('/edit/:_id',IsLoggedIn, (req, res, next) => {
 
 router.post('/edit/:_id',IsLoggedIn, (req, res, next) => {
   Password.findOneAndUpdate({
-
     _id: req.params._id
-
   },
   {
-      userId:req.body.user,
+      userId: req.user._id,
       userName:req.body.username,
-      userPassword: req.body.password
-  }, (err, updatedProject) =>{    
+      userPassword: req.body.password,
+      website: req.body.website
+  }, (err, updatedPassword) =>{    
     if(err){
 
     }
     else {
-      res.redirect('/');
+      res.redirect('/list');
     }
-
   });
-
 });
 
 //-------------------
+
+
+
+//Add the middleware 
+router.all(function(req, res, next) {
+  if(IsLoggedIn){
+
+  var password = "123";
+
+    contextService.set('request:password', password);
+    
+  }
+  next();
+})
+
+
 const User = require('../models/user');
 const passport = require('passport');
+
+
+
 
 router.get('/login', function(req, res, next) {
   res.render('AuthN/login', { title: 'Login' });
 });
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/list',
+
+router.post('/login',
+passport.authenticate('local', {
   failureRedirect: '/login',
   failueMessage: 'Invalid Credentials'
-}));
+}), function(req, res) {
+  //save text value of the password to the context so we can use it later as a key to hash user's passwords
+  contextService.set('request:password', req.body.password);
 
+  encryptionHelper.setEncKey(req.body.password);
+  //console.log("Stored EK: ", encryptionKey);
+  
+  res.redirect('/list');
+});
+
+router.get('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect('/');
+});
 
 
 router.get('/register', function(req, res, next) {
@@ -170,11 +231,13 @@ router.post('/register', function(req, res, next) {
         else{
           //log the user in and send them to their passwords
           req.login(newUser, (err) =>{
+            contextService.set('request:password', req.body.password);
             res.redirect('/');
           })
         }
     }
   );
+   
 });
 
 

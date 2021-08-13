@@ -1,5 +1,17 @@
-
+<section class="hero  is-primary is-small">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+        <p class="title">
+            My passwords
+        </p>
+  
+    </div>
+    </div>
+</section>
+      <br>
 <nav class="level">
+
+    <div class="level-item"></div>
     <div class="level-item has-text-centered">
         <div>
             <p class="heading">Total Passwords</p>
@@ -19,12 +31,29 @@
                         Search
                     </a>
                 </div>
+
             </div>
         </div>
     </div>
+    <div class="level-item has-text-centered">
+    <div>
+
+        <div class="field has-addons">
+            <a class="button is-warning" href="add">
+                <span class="icon-text">
+                    <span class="icon">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span> Add new password</span>
+                </span>
+            </a>
+        </div>
+    </div>
+    </div>
+<div class="level-item"></div>
 </nav>
-
-
+<br>
+{{#if count}}
 <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
 
@@ -34,14 +63,6 @@
                 <td>Name</td>
                 <td>Password</td>
                 <td>
-                    <a class="button is-warning" href="add">
-                        <span class="icon-text">
-                            <span class="icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                            <span> Add new password</span>
-                        </span>
-                    </a>
                 </td>
             </thead>
             <tbody>
@@ -62,26 +83,27 @@
     </div>
 </div>
 
+{{/if}}
 <script>
-function myFunction() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("search");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("table");
-  tr = table.getElementsByTagName("tr");
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
-  }
-}
 </script>

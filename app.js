@@ -13,10 +13,11 @@ const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var articleRouter = require('./routes/article');
 
 const sesssion = require('express-session');
 const passport = require('passport');
-
+const contextService = require('request-context');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 
+
 app.use(express.static(path.join(__dirname, '/public/images')));
 
 
@@ -39,12 +41,18 @@ app.use(express.static(path.join(__dirname, '/public/images')));
 app.use(sesssion({
   secret: 'passwordManager',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 }));
 //init passport
 app.use(passport.initialize());
 //passport uses the config session: express-session
 app.use(passport.session());
+
+app.use(function(req, res, next){
+  res.locals.isAuthenticated = req.isAuthenticated();
+  next()
+});
+
 
 //Link passport to the user model
 const User = require('./models/user');
@@ -59,10 +67,11 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/news', articleRouter);
 
 //Connect to the DB
-const connectionString = 'mongodb+srv://userFORtesting:userFORtesting@cluster0.rfx4x.mongodb.net/test' ;
-mongoose.connect(connectionString, { useNewUrlParser: true, useFindAndModify:true })
+const connectionString = 'mongodb+srv://userFORtesting:userFORtesting@cluster0.rfx4x.mongodb.net/passmgr' ;
+mongoose.connect(connectionString, { useNewUrlParser: true, useFindAndModify:true, useUnifiedTopology: true  })
 .then((message) => {
 
 })

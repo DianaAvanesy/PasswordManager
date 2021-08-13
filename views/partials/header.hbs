@@ -1,61 +1,47 @@
 <nav class="navbar is-transparent">
-  <div class="navbar-brand">
+  <div class="navbar-brand ">
     <a class="navbar-item" href="/">
       <img src="/logo111.PNG" alt="Bulma: a modern CSS framework based on Flexbox" height="400px">
     </a>
-    <div class="navbar-burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-
-  <div id="navbar" class="navbar-menu">
+ 
     <div class="navbar-start">
       <a class="navbar-item" href="/news">
         News
       </a>
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/">
-          Docs
+      {{#if isAuthenticated}}
+      <div class="navbar-item">
+        <a class="button bd-fat-button is-primary is-light is-outlined navbar-item" href="/list" title="Modal">
+          <span>
+            My passwords
+          </span>
         </a>
-        <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/start/">
-            Overview
+      </div>
+      {{/if}}
+
+    </div>
+  </div>
+
+  <div class="navbar-end">
+    <div class="navbar-item">
+
+        <p class="control">
+
+          {{#if isAuthenticated}}
+
+          <a class="button is-primary" href="/logout">
+            <span>Sign Out</span>
           </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/modifiers/">
-            Modifiers
+          {{else}}
+          <a class="button is-primary" href="/login">
+            <span>Sign In</span>
           </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">
-            Columns
-          </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">
-            Layout
-          </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/form/general/">
-            Form
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">
-            Elements
-          </a>
-          <a class="navbar-item is-active" href="https://bulma.io/documentation/components/breadcrumb/">
-            Components
-          </a>
-        </div>
+
+          {{/if}}
+
+
+        </p>
       </div>
     </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="field is-grouped">
-          <p class="control">
-            <a class="button is-primary" href="/login">
-              <span>Sign In</span>
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
   </div>
 </nav>

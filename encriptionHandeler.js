@@ -1,5 +1,9 @@
-const crypto = require("crypto");
+const crypto = require("bcrypt");
 const password = require("./models/password");
+
+
+
+
 
 const encrypt = (password) => {
 
