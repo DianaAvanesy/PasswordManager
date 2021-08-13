@@ -61,7 +61,7 @@ passport.use(User.createStrategy())
 passport.use(new githubStrategy({
   clientID: config.github.clientId,
   clientSecret: config.github.clientSecret,
-  callbackUrl: config.github.callbackUrl
+  callbackURL: config.github.callbackUrl
 
 },
 async (accessToken, refreshToken, profile, done) => {

@@ -6,5 +6,5 @@ const configurations = {
         'callbackUrl': 'https://passwordmanager1221.herokuapp.com/github/callback'
     }
 }
-
+//'https://passwordmanager1221.herokuapp.com/github/callback'
 module.exports = configurations;
