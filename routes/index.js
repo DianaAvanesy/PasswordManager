@@ -240,6 +240,28 @@ router.post('/register', function(req, res, next) {
    
 });
 
+//-----------------------GITHUB
+
+/* GET home page. */
+router.get('/logout', (req, res, next) => {
+  // log the user out using the request object
+  req.logout();
+  // send them back to login
+  res.redirect('/login');
+});
+
+
+// GET handler for /github
+router.get('/github', passport.authenticate('github', { scope: ["user.email"] }));
+
+// GET handler for /github/callback
+router.get('/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login'}),
+  (req, res, next) => {
+    res.redirect('/');
+  }
+);
+
 
 
 

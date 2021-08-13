@@ -25,14 +25,14 @@ const schemaDefinition = {
 var passwordSchema = new mongoose.Schema(schemaDefinition);
 
 passwordSchema.pre('findOneAndUpdate', function (next) {
+    console.log("dfcs");
+    var userAccountPassword = encryptionHelper.getEncKey();
 
-    console.log(this);
-
-    const userAccountPassword = encryptionHelper.getEncKey();
+    if(userAccountPassword == null || userAccountPassword == ''){
+        userAccountPassword = this.userId;
+    }
     const initVector = userAccountPassword.toString().repeat(16).substr(0, 16);
     const Securitykey = userAccountPassword.toString().repeat(32).substr(0, 32);
-
-    console.log("==> updateOne:", initVector, Securitykey);
 
     const message = this._update.userPassword;
 
@@ -43,19 +43,21 @@ passwordSchema.pre('findOneAndUpdate', function (next) {
 
     this._update.userPassword = encryptedData;
 
-    console.log("I shouldn't see you");
     next();
 })
 
 passwordSchema.pre('save', async function(next) {
-    const userAccountPassword = encryptionHelper.getEncKey();
+
+    var userAccountPassword = encryptionHelper.getEncKey();
+    if(userAccountPassword == null || userAccountPassword == ''){
+        userAccountPassword = this.userId;
+    }
+
     const initVector = userAccountPassword.toString().repeat(16).substr(0, 16);
     const Securitykey = userAccountPassword.toString().repeat(32).substr(0, 32);
 
-    console.log("==> Save:", initVector, Securitykey);
-
     const message = this.userPassword;
-
+    console.log("======>",initVector, Securitykey);
     const cipher = crypto.createCipheriv(algorithm, Securitykey, initVector);
     let encryptedData = cipher.update(message, "utf-8", "hex");
 
@@ -66,7 +68,10 @@ passwordSchema.pre('save', async function(next) {
 })
 
 passwordSchema.post('init', async function() {
-    const userAccountPassword = encryptionHelper.getEncKey();
+    var userAccountPassword = encryptionHelper.getEncKey();
+   // if(userAccountPassword == null || userAccountPassword == ''){
+    //    userAccountPassword = this.userId;
+   // }
 
     const Securitykey = userAccountPassword.toString().repeat(32).substr(0, 32);
     const initVector = userAccountPassword.toString().repeat(16).substr(0, 16);
@@ -75,8 +80,6 @@ passwordSchema.post('init', async function() {
     let decryptedData = decipher.update(this.userPassword, "hex", "utf-8");
 
     decryptedData += decipher.final('utf8');
-
-    console.log("Decrypted message: " + decryptedData);
     this.userPassword = decryptedData
 });
 

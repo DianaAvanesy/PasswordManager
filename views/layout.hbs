@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <script src="/javascripts/confirmDelete.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  </head>
-  <body>
+  <!--<script scr="/javascripts/footer.js"></script>-->
+</head>
 
-   {{> header}}
+<body>
+  {{> header}}
+  {{{body}}}
+  {{> footer}}
+</body>
 
-    {{{body}}}
-  </body>
+<script>
+  function autoHeight() {
+    if (document.body.clientHeight < window.innerHeight) {
+      document.querySelector('#footer').style.position = 'absolute';
+      document.querySelector('#footer').style.bottom = '0';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    autoHeight();
+  });
+</script>
+
 </html>

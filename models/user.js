@@ -10,12 +10,16 @@ const schemaDefinition = {
         unique: true
     },
     salt: {
-        type: String,
-        required: true
+        type: String
     },
     hash: {
-        type: String,
-        required: true
+        type: String
+    },
+    oauthID: {
+        type:String
+    },
+    oauthProvider: {
+        type: String
     }
 };
 

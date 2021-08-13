@@ -9,7 +9,7 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 const mongoose = require('mongoose');
 
-
+const config = require('./config/config');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,7 +17,7 @@ var articleRouter = require('./routes/article');
 
 const sesssion = require('express-session');
 const passport = require('passport');
-const contextService = require('request-context');
+const githubStrategy = require('passport-github2').Strategy;
 
 var app = express();
 
@@ -34,7 +34,7 @@ app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 
 
-app.use(express.static(path.join(__dirname, '/public/images')));
+app.use(express.static(path.join(__dirname, 'public/images')));
 
 
 //passswords
@@ -58,6 +58,37 @@ app.use(function(req, res, next){
 const User = require('./models/user');
 //use default local strategy > username/password
 passport.use(User.createStrategy())
+
+passport.use(new githubStrategy({
+  clientID: config.github.clientId,
+  clientSecret: config.github.clientSecret,
+  callbackURL: config.github.callbackURL
+
+},
+async (accessToken, refreshToken, profile, done) => {
+  // determine if we already have a user in our DB
+  const user = await User.findOne({ oauthID: profile.id });
+  // Handle new or returning user
+  if (user) {
+    // returning user, already in my db
+    return done(null, user);
+  }
+  else {
+    // user doesn't exist in my db
+    const newUser = new User(
+      {
+        username: profile.username,
+        oauthID: profile.id,
+        oauthProvider: 'Github'
+      }        
+    );
+    const savedUser = await newUser.save();
+
+    return done(null, savedUser);
+  }
+}
+ ));
+
 // set password to write/read data to/from session object
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -69,8 +100,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/news', articleRouter);
 
-//Connect to the DB
-const connectionString = 'mongodb+srv://userFORtesting:userFORtesting@cluster0.rfx4x.mongodb.net/passmgr' ;
+
+let connectionString = config.db;
 mongoose.connect(connectionString, { useNewUrlParser: true, useFindAndModify:true, useUnifiedTopology: true  })
 .then((message) => {
 
