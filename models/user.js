@@ -1,3 +1,7 @@
+/**
+ * This is the model for the user accounts
+ */
+
 //create a model the same way 
 const mongoose = require('mongoose');
 //inject athentication related functions by injecting the passport module

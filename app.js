@@ -8,12 +8,13 @@ const favicon = require('express-favicon');
 hbs.registerPartials(__dirname + '/views/partials');
 
 const mongoose = require('mongoose');
-
+//set up config file
 const config = require('./config/config');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var articleRouter = require('./routes/article');
+var passwordRouter = require('./routes/passwordRecord');
 
 const sesssion = require('express-session');
 const passport = require('passport');
@@ -30,12 +31,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(__dirname + '/public/images/favicon.png'));
-
-
 
 app.use(express.static(path.join(__dirname, 'public/images')));
 
+app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 //passswords
 app.use(sesssion({
@@ -93,12 +92,10 @@ async (accessToken, refreshToken, profile, done) => {
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/news', articleRouter);
+app.use('/', passwordRouter);
 
 
 let connectionString = config.db;
@@ -109,7 +106,6 @@ mongoose.connect(connectionString, { useNewUrlParser: true, useFindAndModify:tru
 .catch((err) => {
   console.log(err);
 });
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

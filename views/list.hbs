@@ -1,16 +1,14 @@
 <section class="hero  is-primary is-small">
     <div class="hero-body">
         <div class="container has-text-centered">
-        <p class="title">
-            My passwords
-        </p>
-  
-    </div>
+            <p class="title">
+                My passwords
+            </p>
+        </div>
     </div>
 </section>
-      <br>
+<br>
 <nav class="level">
-
     <div class="level-item"></div>
     <div class="level-item has-text-centered">
         <div>
@@ -24,7 +22,8 @@
         <div>
             <div class="field has-addons">
                 <div class="control">
-                    <input class="input" id="search" onkeyup="myFunction()" type="text" placeholder="Find by website">
+                    <input class="input" id="search" onkeyup="searchTableByWebsite()" type="text"
+                        placeholder="Find by website">
                 </div>
                 <div class="control">
                     <a class="button is-info">
@@ -36,21 +35,21 @@
         </div>
     </div>
     <div class="level-item has-text-centered">
-    <div>
+        <div>
 
-        <div class="field has-addons">
-            <a class="button is-warning" href="add">
-                <span class="icon-text">
-                    <span class="icon">
-                        <i class="fas fa-plus"></i>
+            <div class="field has-addons">
+                <a class="button is-warning" href="add">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span> Add new password</span>
                     </span>
-                    <span> Add new password</span>
-                </span>
-            </a>
+                </a>
+            </div>
         </div>
     </div>
-    </div>
-<div class="level-item"></div>
+    <div class="level-item"></div>
 </nav>
 <br>
 {{#if count}}
@@ -71,74 +70,29 @@
                     <td>{{this.website}}</td>
                     <td>{{this.userName}}</td>
                     <td>
-
-                    <div id="password-hide-{{this._id}}" style="display:block; ">
-                        <p>
-                            ********
-                        </p>
-                    </div>
-                    <div id="password-show-{{this._id}}" style="display:none;">
-                    <p >
-                        {{this.userPassword}}
-                    </p>
-                    </div>
+                        <div id="password-hide-{{this._id}}" style="display:block; ">
+                            <p>
+                                ********
+                            </p>
+                        </div>
+                        <div id="password-show-{{this._id}}" style="display:none;">
+                            <p>
+                                {{this.userPassword}}
+                            </p>
+                        </div>
                     </td>
                     <td>
-                        <a href="javascript:SwapPasswordVisibility('password-show-{{this._id}}','password-hide-{{this._id}}')" class="button is-warning"> Show </a>
+                        <a href="javascript:swapPasswordVisibility('password-show-{{this._id}}','password-hide-{{this._id}}')"
+                            class="button is-warning"> Show </a>
                         <a href="/edit/{{this._id}}" class="button is-info"> Edit </a>
-                        <a  href="/delete/{{this._id}}"  onclick="return confirmDeletion();" class="button is-danger"> Delete</a>
-                        <!-- -->
+                        <a href="/delete/{{this._id}}" onclick="return confirmDeletion();" class="button is-danger">
+                            Delete</a>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
-
     </div>
 </div>
 
 {{/if}}
-<script>
-    function myFunction() {
-        // Declare variables
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("search");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("table");
-        tr = table.getElementsByTagName("tr");
-
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-
-
-
-</script>
-<script type="text/javascript">
-function SwapPasswordVisibility(show, hide)
-{
-   divPasswordShow = document.getElementById(show);
-   divPasswordHide = document.getElementById(hide);
-   if( divPasswordHide.style.display == "none" )
-   {
-      divPasswordShow.style.display = "none";
-      divPasswordHide.style.display = "block";
-   }
-   else
-   {
-      divPasswordShow.style.display = "block";
-      divPasswordHide.style.display = "none";
-   }
-}
-</script>
-

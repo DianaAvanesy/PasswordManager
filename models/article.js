@@ -1,6 +1,9 @@
+/**
+ * This is the model for the aticles(cards that you can find in the News page)
+ */
+
 //create a model the same way 
 const mongoose = require('mongoose');
-
 
 const schemaDefinition = {
     title: {
@@ -12,7 +15,6 @@ const schemaDefinition = {
         required: true
     }
 };
-
 
 
 var articleSchema = new mongoose.Schema(schemaDefinition);

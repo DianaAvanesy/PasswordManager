@@ -8,16 +8,14 @@ router.get('/', (req, res, next) => {
 
     Article.find((err, news) => {
         if(err){
-    
         }
         else{
           res.render('news', {title: 'Latest News',
            dataset: news, user:req.user });
         }
-      });
- 
-   
-   });
-   module.exports = router;
+    });   
+});
+
+module.exports = router;
 
 

@@ -2,7 +2,7 @@
     <div class="column is-one-quarter is-offset-one-third">
         <section class="hero">
             <div class="login">
-                <h1 class="title is-1">Sign In</h1>
+                <h1 class="title is-1  has-text-centered">Sign In</h1>
                 <form method="post">
                     <div class="field">
                         <label class="label">Username</label>
@@ -19,10 +19,13 @@
                         </div>
                     </div>
                     <br />
-                    <button class="button is-block is-primary is-medium is-rounded" type="submit">
-                        Login
-                    </button>
-                    <a class="button is-block is-primary is-medium is-rounded" href="/github">
+                        
+
+                    <button class="button is-block is-primary is-medium is-rounded centered" style="width:100%;"type="submit">
+                        Sign In
+                    </button><br>
+
+                    <a class="button is-block is-primary is-light is-rounded" href="/github">
                         Login with GitHub
                     </a>
                     Need an account? <a href="/register" title="Register">Register</a>
@@ -31,23 +34,3 @@
         </section>
     </div>
 </div>
-
-
-
-<!--
-<form method="post">
-    <fieldset class="form-group">
-        <label for="username" class="col-2 control-label">Username: *</label>
-        <input name="username" id="username" required />
-    </fieldset>
-    <fieldset class="form-group">
-        <label for="password" class="col-2 control-label">Password: *</label>
-        <input name="password" id="password" type="password" required />
-    </fieldset>
-    <fieldset class="form-group">
-        <button class="btn btn-info offset-3">Login</button>
-        <hr />
-        Need an account? <a href="/register" title="Register">Register</a>
-    </fieldset>
-</form>
--->
